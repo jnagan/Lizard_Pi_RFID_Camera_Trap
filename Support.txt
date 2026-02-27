@@ -1,0 +1,16 @@
+Raspberry Pi 5
+  Camera support
+    Arducam IXM708 does not read correctly on the raspberry pi 5. To make it read correctly, one must edit the config file in the raspberry pi itself.
+    To get to the config file to do this, type this into the command prompt:
+      Sudo nano /boot/firmware/config.txt
+      Under the [all] subtitle, add the following:
+        dtoverlay = imx708
+          Use “dtoverlay = imx708,cam0” if the arducam is connected through the CAM0 port
+      After adding that to the config file, save the file by using the command “Ctrl+O” then press enter, this will save the file. To exit the txt editor, use the command “Ctrl+X”.
+    Once these steps are completed you can either reboot your raspberry pi if your camera is already connected, or turn the raspberry pi off, connect the camera to the correct CAM port, and turn it back on.
+    To ensure this worked, go the command prompt and use this command:
+      Rpicam-still -o test.jpg
+    This allows the camera to take a picture and save it as “test.jpg”, but if you do not want a picture you can use “rpicam-hello”
+      We use rpicam in this instance as it is what replaced libcamera in the latest updates of the raspberry pi 5, if your pi is an older version/model, you may need to use the libcamera function as well as tweak the RFID code.
+RFID support
+Github repository support
