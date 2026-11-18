@@ -6,7 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 # --- CONFIGURATION ---
-CSV_FILE = Path(__file__).resolve().parent / "bme280_sensor_data.csv"
+CSV_FILE = Path(__file__).resolve().parent / "Hourly_BME.csv"
 
 # --- SPI INITIALIZATION ---
 spi = spidev.SpiDev()
