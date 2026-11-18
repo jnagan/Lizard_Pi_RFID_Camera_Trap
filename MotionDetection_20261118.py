@@ -6,7 +6,7 @@ from picamera2 import Picamera2
 from pathlib import Path
 
 # 1. Create a directory to save the snapshots
-output_dir = Path(__file__).resolve().parent / "MotionPictures3"
+output_dir = Path(__file__).resolve().parent / "MotionPictures"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -45,7 +45,7 @@ while True:
         
         # Create a unique filename based on the current timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"{output_dir}/Camera1_{timestamp}.jpg"
+        filename = f"{output_dir}/Cam_{timestamp}.jpg"
         
         bgr_frame = cv2.cvtColor(img2, cv2.COLOR_RGB2BGR)
         # Save the frame that caught the motion
