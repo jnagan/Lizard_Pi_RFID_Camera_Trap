@@ -37,7 +37,7 @@ def variables():
         os.makedirs(csv_dir)
 
     with open(CSV_PATH, "a", newline="", encoding="utf-8") as csvfile:
-        headers = ["Date", "Time", "Lat", "Lon", "TemperatureCelsius", "Pressure", "Humidity"]
+        headers = ["Date", "Time", "Latitude", "Longitude", "Temperature (C)", "Humidity (%)", "Pressure (hPa)"]
         writer = csv.DictWriter(csvfile, fieldnames=headers)
         
         if not file_exists:
@@ -46,11 +46,11 @@ def variables():
         writer.writerow({
             "Date": datestamp,
             "Time": timestamp,
-            "Lat": "GPS Coords (Change Later)",
-            "Lon": "Change Later",
-            "TemperatureCelsius": temperature_celsius,
-            "Pressure": pressure,
-            "Humidity": humidity
+            "Latitude": "GPS Coords (Change Later)",
+            "Longitude": "Change Later",
+            "Temperature (C)": temperature_celsius,
+            "Humidity (%)": humidity,
+            "Pressure (hPa)": pressure
         })
     print("Data successfully saved to CSV.")
     
