@@ -153,7 +153,7 @@ def take_photo(final_tag, timestamp_str):
     if not os.path.exists(SAVE_DIRECTORY):
         os.makedirs(SAVE_DIRECTORY)
 
-    filename = f"RFID_{final_tag}_{timestamp_str}.jpg"
+    filename = f"Cam_{final_tag}_{timestamp_str}.jpg"
     filepath = os.path.join(SAVE_DIRECTORY, filename)
     
     print(f"Capturing image: {filepath}...")
@@ -232,7 +232,7 @@ def main():
                                     os.makedirs(csv_dir)
 
                                 with open(CSV_PATH, "a", newline="", encoding="utf-8") as csvfile:
-                                    headers = ["Date", "Time", "Location", "RFIDNumber", "TemperatureCelsius", "Pressure", "Humidity", "PictureID"]
+                                    headers = ["Date", "Time", "Latitude", "Longitude", "RFIDNumber", "Temperature (C)", "Humidity (%)", "Pressure (hPa)", "PictureID"]
                                     writer = csv.DictWriter(csvfile, fieldnames=headers)
                         
                                     if not file_exists:
@@ -241,11 +241,12 @@ def main():
                                     writer.writerow({
                                         "Date": datestamp,
                                         "Time": timestamp,
-                                        "Location": "GPS Coords (Change Later)",
+                                        "Latitude": "GPS Coords (Change Later)",
+                                        "Longitude": "GPS Coords (Change Later)",
                                         "RFIDNumber": final_tag,
-                                        "TemperatureCelsius": t if t is not None else "N/A",
-                                        "Pressure": p if p is not None else "N/A",
-                                        "Humidity": h if h is not None else "N/A",
+                                        "Temperature (C)": t if t is not None else "N/A",
+                                        "Humidity (%)": h if h is not None else "N/A",
+                                        "Pressure (hPa)": p if p is not None else "N/A",
                                         "PictureID": filename
                                     })
                                 print("Data successfully saved to CSV.")
