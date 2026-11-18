@@ -22,9 +22,9 @@ RFID_COOLDOWN = 1.0        # Seconds to ignore duplicate reads of the same tag
 
 # Directories & Files
 BASE_DIR = Path(__file__).resolve().parent
-MOTION_DIR = BASE_DIR / "MotionPictures3"
-RFID_DIR = BASE_DIR / "RFIDReaderPictures"
-CSV_PATH = BASE_DIR / "RFIDCameraReaderData.csv"
+MOTION_DIR = BASE_DIR / "MotionPictures"
+RFID_DIR = BASE_DIR / "RFIDPictures"
+CSV_PATH = BASE_DIR / "RFIDData_Cam.csv"
 
 MOTION_DIR.mkdir(parents=True, exist_ok=True)
 RFID_DIR.mkdir(parents=True, exist_ok=True)
@@ -196,8 +196,8 @@ def log_rfid_csv(datestamp, timestamp, final_tag, temp, press, humid, filename):
     file_exists = CSV_PATH.is_file()
     with open(CSV_PATH, "a", newline="", encoding="utf-8") as csvfile:
         headers = [
-            "Date", "Time", "Location", "RFIDNumber",
-            "TemperatureCelsius", "Pressure", "Humidity", "PictureID"
+            "Date", "Time", "Latitude", "Longitude", "RFIDNumber",
+            "Temperature (C)", "Humidity (%)", "Pressure (hPa)", "PictureID"
         ]
         writer = csv.DictWriter(csvfile, fieldnames=headers)
 
@@ -207,11 +207,12 @@ def log_rfid_csv(datestamp, timestamp, final_tag, temp, press, humid, filename):
         writer.writerow({
             "Date": datestamp,
             "Time": timestamp,
-            "Location": "GPS Coords (Change Later)",
+            "Latitude": "GPS Coords (Change Later)",
+            "Longitdue": "GPS Coords (Change Later)",
             "RFIDNumber": final_tag,
-            "TemperatureCelsius": temp if temp is not None else "N/A",
-            "Pressure": press if press is not None else "N/A",
-            "Humidity": humid if humid is not None else "N/A",
+            "Temperature (C)": temp if temp is not None else "N/A",
+            "Humidity (%)": humid if humid is not None else "N/A",
+            "Pressure (hPa)": press if press is not None else "N/A",
             "PictureID": filename
         })
 
@@ -280,7 +281,7 @@ def main():
                     file_timestamp = dt_now.strftime("%Y-%m-%d_%H-%M-%S")
 
                     # Capture photo immediately from the live camera stream
-                    rfid_filename = f"RFID_{final_tag}_{file_timestamp}.jpg"
+                    rfid_filename = f"Cam_{final_tag}_{file_timestamp}.jpg"
                     rfid_filepath = RFID_DIR / rfid_filename
                     rfid_frame = picam2.capture_array()
 
@@ -327,7 +328,7 @@ def main():
                     if count > MOTION_THRESHOLD and (now_ts - last_motion_trigger) > MOTION_COOLDOWN:
                         last_motion_trigger = now_ts
                         motion_ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-                        motion_filepath = MOTION_DIR / f"Camera1_{motion_ts}.jpg"
+                        motion_filepath = MOTION_DIR / f"Cam_{motion_ts}.jpg"
 
                         if save_frame(curr_frame, motion_filepath):
                             print(f"[MOTION TRIGGER] Snapshot saved: {motion_filepath}")
@@ -338,7 +339,7 @@ def main():
             time.sleep(0.01)
 
     except KeyboardInterrupt:
-        print("\nShutting down gracefully...")
+        print("\nShutting down")
 
     finally:
         picam2.stop()
